@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Presto</string>
+    <string name="error_msg">Something went wrong, Please try later..!</string>
+    <string name="dimension_lable">100*100</string>
+    <string name="title_label">Title :</string>
+    <string name="title">Sample title</string>
+    <string name="size_lable">Size :</string>
+    <string name="size">Sample title</string>
+    <string name="dimension_label">Dimension:</string>
+</resources>
