@@ -8,11 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-
-import com.jakewharton.picasso.OkHttp3Downloader;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.presto.vatsalpatel.presto.R;
-import com.squareup.picasso.Picasso;
+
 
 import java.util.List;
 
@@ -39,11 +39,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         holder.size.setText(mDataSet.get(position).size);
         holder.dimension.setText(mDataSet.get(position).dimension);
 
-        Picasso.Builder builder = new Picasso.Builder(mContext);
-        builder.downloader(new OkHttp3Downloader(mContext));
-        builder.build().load(mDataSet.get(position).getImageUrl())
-                .placeholder((R.drawable.ic_launcher_background))
-                .error(R.drawable.ic_launcher_background)
+        RequestOptions requestOptions = new RequestOptions()
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
+
+        Glide.with(mContext)
+                .load(mDataSet.get(position).imageUrl)
+                .apply(requestOptions)
                 .into(holder.imageView);
     }
 

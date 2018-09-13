@@ -10,11 +10,16 @@ import retrofit2.http.Query;
 
 public interface RetrofitServices {
 
-    // Want to show different ways of calling Apis.
-    @GET("rest/?method=flickr.photos.search&api_key=9ff06ccbcd84c3ba832fc1420df0ef49&format=json&nojsoncallback=1&auth_token=72157698054558242-48a863d4feb4712a&api_sig=ec96f7ad35e73ea88fa17d532cacd91e")
-    Call<FlickrPhotoSearchResponse> getAllPhotos();
+    @GET("rest/?method=flickr.photos.search&api_key=d81a384144084d2638d8ee136cc0398a&format=json&nojsoncallback=1&auth_token=72157673388168278-9fd7b2cafb42b02f&api_sig=1c532783034c421591544d7cbf9e65dd")
+    Call<FlickrPhotoSearchResponse> getAllPhotos(@Query("method") String method,
+                                                 @Query("api_key") String key,
+                                                 @Query("format") String format,
+                                                 @Query("nojsoncallback")String i,
+                                                 @Query("auth_token") String auth,
+                                                 @Query("api_sig")String apiSig
+    );
 
-    // Passing by Query Params
+
     @GET("rest/")
     Call<ImageSizeResponse> getImageSize(@Query("method") String method,
                                          @Query("api_key") String key,

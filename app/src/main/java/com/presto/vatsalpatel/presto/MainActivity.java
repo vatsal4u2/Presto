@@ -11,6 +11,8 @@ import android.widget.Toast;
 import com.presto.vatsalpatel.presto.Api.RetrofitClient;
 import com.presto.vatsalpatel.presto.Api.RetrofitServices;
 import com.presto.vatsalpatel.presto.Data.ImageSizeApi.ImageSizeResponse;
+import com.presto.vatsalpatel.presto.Data.ImageSizeApi.Size;
+import com.presto.vatsalpatel.presto.Data.ImageSizeApi.Sizes;
 import com.presto.vatsalpatel.presto.Data.SearchApi.FlickrPhotoSearchResponse;
 import com.presto.vatsalpatel.presto.Data.SearchApi.Photo;
 import com.presto.vatsalpatel.presto.Data.SearchApi.Photos;
@@ -33,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private List<ListData> mDataSet;
-    private static ListData listData;
+    private  ListData listData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,39 +55,49 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
 
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Loading..");
+        progressDialog.setMessage(getString(R.string.dialog_message));
         progressDialog.show();
 
         final RetrofitServices client = RetrofitClient.getRetrofitInstance().create(RetrofitServices.class);
-        Call<FlickrPhotoSearchResponse> call = client.getAllPhotos();
+        Call<FlickrPhotoSearchResponse> call = client.getAllPhotos("flickr.photos.search",
+                BuildConfig.API_KEY,
+                "json",
+                Integer.toString(1),
+                BuildConfig.AUTH,
+                BuildConfig.API_SIG
+                );
         call.enqueue(new Callback<FlickrPhotoSearchResponse>() {
             @Override
             public void onResponse(Call<FlickrPhotoSearchResponse> call, Response<FlickrPhotoSearchResponse> response) {
                 progressDialog.dismiss();
 
                 if (response.isSuccessful() && response.body() != null) {
-                    mDataSet = new ArrayList<>();
+                      mDataSet = new ArrayList<>();
                       listData = new ListData();
                      for(Photo photo : response.body().getPhotos().getPhoto()) {
-
-                         listData.setTitle(photo.getTitle());
-                            Call<ImageSizeResponse> imageSizeResponseCall = client.getImageSize("flickr.photos.getSizes",
+                        // listData.setTitle(photo.getTitle());
+                         final String title = photo.getTitle();
+                         Call<ImageSizeResponse> imageSizeResponseCall = client.getImageSize("flickr.photos.getSizes",
                                     BuildConfig.API_KEY,
                                     photo.getId(),
                                     "json",
                                     Integer.toString(1)
                             );
 
-                            imageSizeResponseCall.enqueue(new Callback<ImageSizeResponse>() {
+                         imageSizeResponseCall.enqueue(new Callback<ImageSizeResponse>() {
                                 @Override
                                 public void onResponse(Call<ImageSizeResponse> call, Response<ImageSizeResponse> response) {
                                     Log.v("ImageSizeApi", response.body() + "");
                                     if(response.isSuccessful() && response.body() != null){
-                                        listData.setImageUrl(response.body().getSizes().getSize().get(0).getSource());
-                                        listData.setSize(response.body().getSizes().getSize().get(0).getLabel());
-                                        listData.setDimension(response.body().getSizes().getSize().get(0).getWidth() +"* " +
-                                                response.body().getSizes().getSize().get(0).getHeight());
-                                        mDataSet.add(listData);
+                                        for(Size size :response.body().getSizes().getSize()) {
+                                            ListData listData = new ListData();
+                                            listData.setTitle(title.isEmpty() ? getString(R.string.default_title) : title );
+                                            listData.setImageUrl(size.getSource());
+                                            listData.setSize(size.getLabel());
+                                            listData.setDimension(size.getWidth() + "X" +
+                                                    size.getHeight());
+                                            mDataSet.add(listData);
+                                        }
                                         mAdapter.setListData(mDataSet);
                                     }
                                 }
@@ -95,9 +107,8 @@ public class MainActivity extends AppCompatActivity {
                                     Log.v("Error", t.getLocalizedMessage());
                                 }
                             });
-
-
                         }
+
                 }
             }
 
@@ -107,13 +118,6 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), R.string.error_msg,Toast.LENGTH_LONG).show();
             }
         });
-
-
     }
 
-    private void updateAdapter() {
-        if(mAdapter != null){
-            mAdapter.setListData(mDataSet);
-        }
-    }
 }
