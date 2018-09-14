@@ -20,5 +20,6 @@ This is test project for Presto.
   **API_SIG=1c532783034c421591544d7cbf9e65dd**
   
   - If you are having issue with getting response from API, You can use your credentials.You don't need to change anything in code.
+  - Minor UI adujstment can be achived with minimum effort.
 
   
