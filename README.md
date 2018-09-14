@@ -13,13 +13,14 @@ This is test project for Presto.
 - I was getting issue while fetching data using given API_KEY. So I have created/Requetsed new API_KEY and used in this project.
   All the API_KEY,AUTH, and API_SIG is defined in **gradle.properties** file.
   
-  **API_KEY=d81a384144084d2638d8ee136cc0398a**
+  **API_KEY=1f14c84d869d4c8698271c799544808c**
   
-  **AUTH=72157673388168278-9fd7b2cafb42b02f**
+  **AUTH=72157699739951311-e5a776ac9b5e6b39**
   
-  **API_SIG=1c532783034c421591544d7cbf9e65dd**
+  **API_SIG=0a1af9993594399b27f5bbd0a0b375aa**
   
   - If you are having issue with getting response from API, You can use your credentials.You don't need to change anything in code.
+  - It seems like API_KEY, AUTH,and API_SIG expires after few hours.So When you test this project, make sure you update all above credentials in gradle.properties file.
   - Minor UI adujstment can be achived with minimum effort.
 
   
