@@ -1,4 +1,4 @@
-package com.presto.vatsalpatel.presto.Data.ImageSizeApi;
+package com.presto.vatsalpatel.presto.Models.ImageSizeApi;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

@@ -1,6 +1,8 @@
 package com.presto.vatsalpatel.presto.Api;
 
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -27,6 +29,7 @@ public class RetrofitClient {
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
+
         }
         return mRetrofit;
     }

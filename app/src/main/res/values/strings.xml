@@ -6,5 +6,7 @@
     <string name="title">Sample title</string>
     <string name="size_lable">Size :</string>
     <string name="size">Sample title</string>
-    <string name="dimension_label">Dimension:</string>
+    <string name="dimension_label">Dimension :</string>
+    <string name="dialog_message">Loading..</string>
+    <string name="default_title">Default Title</string>
 </resources>
