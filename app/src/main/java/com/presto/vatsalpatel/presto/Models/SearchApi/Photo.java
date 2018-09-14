@@ -1,5 +1,5 @@
 
-package com.presto.vatsalpatel.presto.Data.SearchApi;
+package com.presto.vatsalpatel.presto.Models.SearchApi;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

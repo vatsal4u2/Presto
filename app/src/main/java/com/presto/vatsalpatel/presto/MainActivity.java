@@ -10,18 +10,14 @@ import android.widget.Toast;
 
 import com.presto.vatsalpatel.presto.Api.RetrofitClient;
 import com.presto.vatsalpatel.presto.Api.RetrofitServices;
-import com.presto.vatsalpatel.presto.Data.ImageSizeApi.ImageSizeResponse;
-import com.presto.vatsalpatel.presto.Data.ImageSizeApi.Size;
-import com.presto.vatsalpatel.presto.Data.ImageSizeApi.Sizes;
-import com.presto.vatsalpatel.presto.Data.SearchApi.FlickrPhotoSearchResponse;
-import com.presto.vatsalpatel.presto.Data.SearchApi.Photo;
-import com.presto.vatsalpatel.presto.Data.SearchApi.Photos;
+import com.presto.vatsalpatel.presto.Models.ImageSizeApi.ImageSizeResponse;
+import com.presto.vatsalpatel.presto.Models.ImageSizeApi.Size;
+import com.presto.vatsalpatel.presto.Models.SearchApi.FlickrPhotoSearchResponse;
+import com.presto.vatsalpatel.presto.Models.SearchApi.Photo;
 import com.presto.vatsalpatel.presto.Ui.Adapter;
 import com.presto.vatsalpatel.presto.Ui.ListData;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -74,8 +70,12 @@ public class MainActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                       mDataSet = new ArrayList<>();
                       listData = new ListData();
+                    // In case if we get null response from server..
+                      if(response.body().getPhotos() == null){
+                          onFailure(call,new Throwable());
+                          return;
+                      }
                      for(Photo photo : response.body().getPhotos().getPhoto()) {
-                        // listData.setTitle(photo.getTitle());
                          final String title = photo.getTitle();
                          Call<ImageSizeResponse> imageSizeResponseCall = client.getImageSize("flickr.photos.getSizes",
                                     BuildConfig.API_KEY,
@@ -89,12 +89,18 @@ public class MainActivity extends AppCompatActivity {
                                 public void onResponse(Call<ImageSizeResponse> call, Response<ImageSizeResponse> response) {
                                     Log.v("ImageSizeApi", response.body() + "");
                                     if(response.isSuccessful() && response.body() != null){
+
+                                        // In case if we get null response from server..
+                                        if(response.body().getSizes() == null){
+                                            onFailure(call,new Throwable());
+                                            return;
+                                        }
                                         for(Size size :response.body().getSizes().getSize()) {
                                             ListData listData = new ListData();
                                             listData.setTitle(title.isEmpty() ? getString(R.string.default_title) : title );
                                             listData.setImageUrl(size.getSource());
                                             listData.setSize(size.getLabel());
-                                            listData.setDimension(size.getWidth() + "X" +
+                                            listData.setDimension(size.getWidth() + " X " +
                                                     size.getHeight());
                                             mDataSet.add(listData);
                                         }
