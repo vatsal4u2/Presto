@@ -31,8 +31,6 @@ public class MainActivity extends AppCompatActivity {
     private Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private List<ListData> mDataSet;
-    private  ListData listData;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
 
                 if (response.isSuccessful() && response.body() != null) {
                       mDataSet = new ArrayList<>();
-                      listData = new ListData();
                     // In case if we get null response from server..
                       if(response.body().getPhotos() == null){
                           onFailure(call,new Throwable());
