@@ -14,10 +14,6 @@ jobs:
 #         name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
 #         command: sudo chmod +x ./gradlew
       - run:
-          name: Build debug APK and release APK
-          command: |
-            ./gradlew :app:assembleDebug
-      - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
       - save_cache:
@@ -27,10 +23,13 @@ jobs:
       - run:
           name: Run Tests
           command: ./gradlew lint test
-
+      - run:
+          name: Build debug APK and release APK
+          command: |
+            ./gradlew :app:assembleDebug
       - store_artifacts:
-          path: app/build/reports
-          destination: reports
+          path: app/build/outputs/apk/
+          destination: apks/
       - store_test_results:
           path: app/build/test-results
       # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
