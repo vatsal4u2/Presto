@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
         progressDialog.setMessage(getString(R.string.dialog_message));
         progressDialog.show();
 
+        // Test commit to see if it generates the apk..?
+
         final RetrofitServices client = RetrofitClient.getRetrofitInstance().create(RetrofitServices.class);
         Call<FlickrPhotoSearchResponse> call = client.getAllPhotos("flickr.photos.search",
                 BuildConfig.API_KEY,
