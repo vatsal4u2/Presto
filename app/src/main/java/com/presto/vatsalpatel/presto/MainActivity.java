@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private List<ListData> mDataSet;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
